@@ -31,6 +31,11 @@ var cam;
 var zoomout;
 var zm=1;
 var SCROLL_SPEED;
+
+var prev_value;
+
+var x_pos;
+
 function windowResized()
 {
 
@@ -39,6 +44,7 @@ function windowResized()
 }
 
 function setup() {
+
   canvas = createCanvas(displayWidth, displayHeight);
 	// cam = new Camera();
 
@@ -66,6 +72,7 @@ function setup() {
 	back.id('back');
 
   netslider = createSlider(-8,8,0);
+  //netslider = createSlider(0,1,0);
   netslider.class('slider1');
   netslider.size(5000);
   netslider.position(0,windowHeight-100);
@@ -149,59 +156,44 @@ menu.mousePressed(hideMenu);
 zoomout.mousePressed(zoomOut);
 canvx = -2500 + windowWidth/2;
 backx = -2500 + windowWidth/2;
+
+netslider.value(0)
+x_pos = 0;
+prev_value = 0;
 }
 
 
 
 function draw() {
-
+//background(200)
 rect(700,100,100,100);
-  value = intentionSliders[0].val + intentionSliders[1].val + intentionSliders[2].val + intentionSliders[3].val - interpretationSliders[0].val -interpretationSliders[1].val -interpretationSliders[2].val -interpretationSliders[3].val;
-// print(value);
 
-	netslider.value(value);
-	v = map(value,-8,8,0,5000);
-	valueIndex = value + 8;
+ // value = intentionSliders[0].val + intentionSliders[1].val + intentionSliders[2].val + intentionSliders[3].val - interpretationSliders[0].val -interpretationSliders[1].val -interpretationSliders[2].val -interpretationSliders[3].val;
+ // netslider.value(value);
+  
+
+   //print(p1)
+   //print(pos)
+
+	//netslider.value(pos);
+	
+	
 	// for(var i; i<17; i++){
 	// 	projdiv[i].position(x[i],y);
 	// }
-
+//ellipse(x_pos,height/2,100,100);
 // canvx = -2500 + windowWidth/2 + SCROLL_SPEED;
 // backx = -2500 + windowWidth/2 + SCROLL_SPEED;
 
-	if(show<0){
-	menu.html("Show Menu");
-		$( "#menu" ).hide();
-	} else{
-		menu.html("Hide Menu");
-		$( "#menu" ).show();
-	}
-	if(zm<0){
-		zoomout.html("Zoom In");
-		canv.style('zoom','0.5');
-		back.style('zoom','0.5');
-
-		for(var i=0;i<17;i++){
-		projdiv[i].style('zoom','0.5');
-	}
-}else{
-
-		zoomout.html("Zoom Out");
-		canv.style('zoom','1');
-		back.style('zoom','1');
-		for(var i=0;i<17;i++){
-		projdiv[i].style('zoom','1');
-	}
-	}
-
-
+	
+/*
 	for(i=0; i<17; i++){
 
 		projdiv[i].position(x[i]-2500+windowWidth/2-150,y[i]);
 				// projdiv[i].position(x[i]-1500+windowWidth-150+morex[i],y);
 	}
 
-
+*/
 
 // if (canvx > 0 && leftmost.x >= 0) canvx = 0;
 // if (canvx < 0 && rightmost.x <= width) canvx = 0;
@@ -209,7 +201,7 @@ rect(700,100,100,100);
 // if (canvy < 0 && bottommost.y <= height) canvy = 0;
 
 canv.position(canvx,canvy);
-back.position(backx,backy);
+//back.position(backx,backy);
 
 
 
@@ -270,6 +262,7 @@ function Slider(min,max,val,name="",index, definition="")
   	this.valueCallback = function(elt)
   	{
   		this.val = elt.value();
+  		updateNetSlider()
   		// console.log(this.val);
   		//console.log("slider call back")
 
@@ -319,15 +312,61 @@ for(i=0;i<collect.length;i++) {
 
 function hideMenu() {
 	show=-1*show;
+	if(show<0){
+	menu.html("Show Menu");
+		$( "#menu" ).hide();
+	} else{
+		menu.html("Hide Menu");
+		$( "#menu" ).show();
+	}
+	
+
 
 }
 
 function zoomOut() {
 	zm = -1*zm;
+	if(zm<0){
+		zoomout.html("Zoom In");
+		canv.style('zoom','0.5');
+		back.style('zoom','0.5');
+
+		for(var i=0;i<17;i++){
+		projdiv[i].style('zoom','0.5');
+	}
+}else{
+
+		zoomout.html("Zoom Out");
+		canv.style('zoom','1');
+		back.style('zoom','1');
+		for(var i=0;i<17;i++){
+		projdiv[i].style('zoom','1');
+	}
+	}
 
 }
 
+function updateNetSlider()
+{
+	//print("updating slider");
+	value = intentionSliders[0].val + intentionSliders[1].val + intentionSliders[2].val + intentionSliders[3].val - interpretationSliders[0].val -interpretationSliders[1].val -interpretationSliders[2].val -interpretationSliders[3].val;
+	valueIndex = value + 8;
+	//print(value)
+	netslider.value(value);
+}
 
+
+function mouseMoved()
+{
+	
+	x_pos = mouseX;
+	//canv.position(mouseX,0)
+	back.position(mouseX,0);
+	print(mouseX)
+	//projdiv[8].position(mouseX,0)
+	//print(projdiv[8].position())
+
+}
 // function mouseMoved() {
 // 	canvx = mouseX < windowWidth/2 ?  +SCROLL_SPEED : -SCROLL_SPEED;
 // 	backx = mouseX < windowWidth/2 ? +SCROLL_SPEED : -SCROLL_SPEED;
