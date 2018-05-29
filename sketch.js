@@ -160,6 +160,7 @@ backx = -2500 + windowWidth/2;
 netslider.value(0)
 x_pos = 0;
 prev_value = 0;
+
 }
 
 
@@ -363,6 +364,11 @@ function mouseMoved()
 	//canv.position(mouseX,0)
 	back.position(mouseX,0);
 	print(mouseX)
+	for(i=0; i<17; i++){
+
+		projdiv[i].position(x[i]-2500+mouseX/2-150,y[i]);
+				// projdiv[i].position(x[i]-1500+windowWidth-150+morex[i],y);
+	}
 	//projdiv[8].position(mouseX,0)
 	//print(projdiv[8].position())
 
